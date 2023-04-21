@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS public.twitter_users_partitioned (
     friends_count integer,
     listed_count integer,
     favourites_count integer,
-    preferred_language text COLLATE pg_catalog."default"
+    language text COLLATE pg_catalog."default"
    )
-PARTITION BY RANGE(EXTRACT(YEAR FROM twitter_join_date));
+PARTITION BY RANGE(EXTRACT(DAY FROM date));
 
 
 -- create child tables for each partition
