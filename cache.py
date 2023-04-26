@@ -41,17 +41,23 @@ class SearchCache:
         - KeyError: If the cache entry has expired.
         """
         # retrieve the value and timestamp from the cache for a given key
-        value, timestamp = self.cache[key]
+        try:
+            value, timestamp = self.cache[key]
+        except KeyError:
+            print(f"Cache entry with key '{key}' not found.")
+            return None
         # check if the cache entry has expired by comparing its timestamp with the current time
         if time.time() - timestamp > self.ttl:
             # remove the expired cache entry
             self.cache.pop(key)
-            # raise a KeyError with a message indicating the cache entry has expired
-            raise KeyError('Cache entry has expired')
+            # print an error message indicating the cache entry has expired
+            print(f"Cache entry with key '{key}' has expired.")
+            return None
         # move the accessed cache entry to the end of the ordered dictionary
         self.cache.move_to_end(key)
         # return the value associated with the given key
         return value
+
 
     def __setitem__(self, key, value):
         """
